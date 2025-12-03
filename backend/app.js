@@ -35,8 +35,8 @@ app.use('/api/admin', require('./routes/admin'));
 // Sincronización de la base de datos y arranque del servidor
 async function boot() {
     try {
-        await sequelize.sync();
-        console.log('Base de datos sincronizada correctamente');
+        await sequelize.sync({ force: true });
+        console.log('Base de datos recreada desde cero');
 
         app.listen(PORT, () => {
             console.log(`Servidor corriendo en http://localhost:${PORT}`);
