@@ -27,4 +27,5 @@ Prerequisitos:
 Hecho esto, el sistema ya puede ser probado:
   
   clientes: con vscode live server frontend/bienvenida/index.html 
+  
   admin: http://localhost:3000/api/admin/login
