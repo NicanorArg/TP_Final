@@ -8,7 +8,6 @@ const { sequelize } = require('./model/core');
 // Inicializar Express
 const app = express();
 const PORT = process.env.PORT || 3000;
-const SYNC_STRATEGY = process.env.SYNC_STRATEGY || 'none';
 
 
 // Middleware
@@ -34,16 +33,8 @@ app.use('/api/admin', require('./routes/admin'));
 
 // Sincronización de la base de datos y arranque del servidor
 async function boot() {
-    try {
-        await sequelize.sync({ force: true });
-        console.log('Base de datos recreada desde cero');
-
-        app.listen(PORT, () => {
-            console.log(`Servidor corriendo en http://localhost:${PORT}`);
-        });
-    } catch (err) {
-        console.error('Error al sincronizar la base de datos:', err);
-    }
+    await sequelize.sync();
+    console.log('Base de datos recreada desde cero');
 }
 
 boot();
