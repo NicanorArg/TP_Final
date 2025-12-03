@@ -7,6 +7,7 @@ Prerequisitos:
     CREATE DATABASE dadisimo
 
   en /backend crear un archivo .env con las siguientes variables de entorno:
+  
     DB_HOST=localhost
     DB_NAME=dadisimo
     DB_USER=*tuusuario*
