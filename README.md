@@ -19,9 +19,13 @@ Prerequisitos:
     PORT = 3000
 
   desde el commandprop ejecutar:
+  
       cd backend
+      
       npm install
+      
       node test_data.js (llenar la base de datos con elementos de prueba)
+      
       npm start (para levantar el servidor en el puerto)
 
 Hecho esto, el sistema ya puede ser probado:
