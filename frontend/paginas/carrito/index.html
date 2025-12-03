@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carrito</title>
+    <link rel="stylesheet" href="../common/header.css">
+    <link rel="stylesheet" href="../common/navbar.css">
+    <link rel="stylesheet" href="carrito.css">
+    <link rel="stylesheet" href="../common/footer.css">
+</head>
+<body>
+    <header class="header">
+        <img src="http://localhost:3000/images/dadisimo_logo.png" alt="Logo Dadisimo" class="header-logo">
+        <h1 class="header-title">Dadisimo</h1>
+    </header>
+    
+    <nav class="navbar">
+        <div>
+            <a href="../productos/index.html">Productos</a>
+            <a href="../carrito/index.html">Carrito</a>
+        </div>
+        <button id="btnSalir">Salir</button>
+    </nav>
+
+    <h1>Carrito de compras</h1>
+
+    <div class="carrito-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>Producto</th>
+                    <th>Precio</th>
+                    <th>Cantidad</th>
+                    <th>Subtotal</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody id="carrito-body"></tbody>
+        </table>
+    </div>
+
+    <h2 id="total"></h2>
+
+    <div class="actions-container">
+        <button id="vaciarCarrito" class="btn btn-danger">Vaciar carrito</button>
+        <button id="realizarCompra" class="btn btn-success">Realizar compra</button>
+    </div>
+
+    <script type="module" src="carrito.js"></script>
+    <script>
+        document.getElementById('btnSalir').addEventListener('click', function() {
+            localStorage.clear();
+            sessionStorage.clear();
+            window.location.href = '../bienvenido/index.html';
+        });
+    </script>
+
+    <footer class="footer">
+        <p>Desarrollado por: Nicanor Gatti</p>
+    </footer>
+</body>
+</html>

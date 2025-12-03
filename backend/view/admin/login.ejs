@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= titulo %></title>
+    <link rel="stylesheet" href="/css/admin.css">
+</head>
+<body class="login-page">
+    <div class="login-container">
+        <div class="login-card">
+            <div class="login-header">
+                <img src="/images/dadisimo_logo.png" alt="Dadisimo Logo" class="login-logo">
+                <h1>Dadisimo Admin</h1>
+                <p>Panel de Administración</p>
+            </div>
+
+            <% if (error) { %>
+            <div class="alert alert-error">
+                <%= error %>
+            </div>
+            <% } %>
+
+            <form action="/api/admin/login" method="POST" class="login-form">
+                <div class="form-group">
+                    <label for="correo">
+                        Correo electrónico
+                    </label>
+                    <input 
+                        type="email" 
+                        id="correo" 
+                        name="correo" 
+                        placeholder="ingrese su correo electrónico" 
+                        required
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="contrasena">
+                        Contraseña
+                    </label>
+                    <input 
+                        type="password" 
+                        id="contrasena" 
+                        name="contrasena" 
+                        placeholder="ingrese su contrasena" 
+                        required
+                    >
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-block">
+                    Iniciar Sesión
+                </button>
+
+                <button type="button" class="btn btn-secondary btn-block" id="btnAccesoRapido">
+                    Acceso Rápido
+                </button>
+            </form>
+
+            <div class="login-footer">
+                <p>Desarrollado por: Nicanor Gatti</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Botón de acceso rápido
+        document.getElementById('btnAccesoRapido').addEventListener('click', function() {
+            document.getElementById('correo').value = 'admin@test.com';
+            document.getElementById('contrasena').value = 'admin123';
+        });
+    </script>
+</body>
+</html>

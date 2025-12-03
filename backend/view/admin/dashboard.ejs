@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= titulo %></title>
+    <link rel="stylesheet" href="/css/admin.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <h1>Dadisimo Admin</h1>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="/api/admin/dashboard" class="nav-link active">Dashboard</a></li>
+                <li><a href="/api/admin/ventas" class="nav-link">Ventas</a></li>
+                <li><a href="/api/admin/login" class="nav-link">Salir</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="main-content">
+        <div class="container">
+            <div class="page-header">
+                <h2>Dashboard</h2>
+            </div>
+
+            <!-- Sección productos -->
+            <section class="dashboard-section">
+                <div class="section-header">
+                    <h3>productos</h3>
+                    <a href="/api/admin/productos/nuevo" class="btn btn-success">
+                        Agregar Producto
+                    </a>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Imagen</th>
+                                <th>Nombre</th>
+                                <th>Tipo</th>
+                                <th>Material</th>
+                                <th>Precio</th>
+                                <th>Stock</th>
+                                <th>Estado</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% if (productos.length > 0) { %>
+                                <% productos.forEach(producto => { %>
+                                <tr>
+                                    <td><%= producto.id %></td>
+                                    <td>
+                                        <% if (producto.imagen) { %>
+                                            <img src="<%= producto.imagen %>" alt="<%= producto.nombre %>" class="table-img">
+                                        <% } else { %>
+                                            <div class="no-image">Sin imagen</div>
+                                        <% } %>
+                                    </td>
+                                    <td><%= producto.nombre %></td>
+                                    <td><%= producto.tipo %></td>
+                                    <td><%= producto.material || '-' %></td>
+                                    <td>$<%= producto.precio %></td>
+                                    <td><%= producto.stock %></td>
+                                    <td>
+                                        <% if (producto.activo) { %>
+                                            <span class="badge badge-success">Activo</span>
+                                        <% } else { %>
+                                            <span class="badge badge-danger">Inactivo</span>
+                                        <% } %>
+                                    </td>
+                                    <td>
+                                        <div class="action-buttons">
+                                            <a href="/api/admin/productos/editar/<%= producto.id %>" class="btn btn-sm btn-primary" title="Editar">
+                                                Editar
+                                            </a>
+                                            <% if (producto.activo) { %>
+                                                <button onclick="cambiarEstadoProducto('<%= producto.id %>', false)" class="btn btn-sm btn-warning" title="Desactivar">
+                                                    Desactivar
+                                                </button>
+                                            <% } else { %>
+                                                <button onclick="cambiarEstadoProducto('<%= producto.id %>', true)" class="btn btn-sm btn-success" title="Activar">
+                                                    Activar
+                                                </button>
+                                            <% } %>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <% }); %>
+                            <% } else { %>
+                                <tr>
+                                    <td colspan="10" class="text-center">No hay productos registrados</td>
+                                </tr>
+                            <% } %>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <p>Dadisimo - Sistema de gestion y venta de articulos de TTRPGs</p>
+        <p>Desarrollado por: Nicanor Gatti</p>
+    </footer>
+
+    <div id="modalConfirmar" class="modal">
+        <div class="modal-content">
+            <h3 id="modalTitulo">Confirmar acción</h3>
+            <p id="modalMensaje">¿Está seguro de realizar esta acción?</p>
+            <div class="modal-buttons">
+                <button class="btn btn-secondary" onclick="cerrarModal()">Cancelar</button>
+                <button class="btn btn-primary" id="btnConfirmar">Confirmar</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="/js/admin.js"></script>
+</body>
+</html>

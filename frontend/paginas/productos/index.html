@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Productos</title>
+    <link rel="stylesheet" href="../common/header.css">
+    <link rel="stylesheet" href="../common/navbar.css">
+    <link rel="stylesheet" href="productos.css">
+    <link rel="stylesheet" href="../common/footer.css">
+</head>
+<body>
+    <header class="header">
+        <img src="http://localhost:3000/images/dadisimo_logo.png" alt="Logo Dadisimo" class="header-logo">
+        <h1 class="header-title">Dadisimo</h1>
+    </header>
+    
+    <nav class="navbar">
+        <div>
+            <a href="../productos/index.html">Productos</a>
+            <a href="../carrito/index.html">Carrito</a>
+        </div>
+        <button id="btnSalir">Salir</button>
+    </nav>
+
+    <h1>Lista de Productos</h1>
+
+    <div class="filter-container">
+        <label for="filtroTipo">Filtrar por tipo:</label>
+        <select id="filtroTipo">
+            <option value="">Todos</option>
+            <option value="dado">Dado</option>
+            <option value="mini">Mini</option>
+        </select>
+    </div>
+    
+    <div class="productos-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>imagen</th>
+                    <th>Nombre</th>
+                    <th>Tipo</th>
+                    <th>Descripcion</th>
+                    <th>Precio</th>
+                    <th>Stock</th>
+                    <th>Cantidad</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody id="productos-body">
+
+            </tbody>
+        </table>
+    </div>
+
+    <div class="pagination">
+        <button id="prevBtn">Anterior</button>
+        <button id="nextBtn">Siguiente</button>
+    </div>
+
+    <script type="module" src="productos.js"></script>
+    <script>
+        document.getElementById('btnSalir').addEventListener('click', function() {
+            localStorage.clear();
+            sessionStorage.clear();
+            window.location.href = '../bienvenido/index.html';
+        });
+    </script>
+
+    <footer class="footer">
+        <p>Desarrollado por: Nicanor Gatti</p>
+    </footer>
+
+</body>
+</html>

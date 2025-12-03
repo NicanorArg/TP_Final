@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ticket de Compra</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <link rel="stylesheet" href="../common/header.css">
+    <link rel="stylesheet" href="../common/navbar.css">
+    <link rel="stylesheet" href="ticket.css">
+    <link rel="stylesheet" href="../common/footer.css">
+</head>
+<body>
+    <header class="header">
+        <img src="http://localhost:3000/images/dadisimo_logo.png" alt="Logo Dadisimo" class="header-logo">
+        <h1 class="header-title">Dadisimo</h1>
+    </header>
+    
+    <nav class="navbar">
+        <div>
+            <a href="../productos/index.html">Productos</a>
+            <a href="../carrito/index.html">Carrito</a>
+        </div>
+        <button id="btnSalir">Salir</button>
+    </nav>
+
+    <div class="content-wrapper">
+        <div class="container">
+            <div id="ticket"></div>
+            <button id="btnDescargar">Descargar PDF</button>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('btnSalir').addEventListener('click', function() {
+            localStorage.clear();
+            sessionStorage.clear();
+            window.location.href = '../bienvenido/index.html';
+        });
+    </script>
+    <script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const venta = JSON.parse(sessionStorage.getItem("ultimaVenta"));
+        
+        if (!venta) {
+            document.body.innerHTML = '<div class="no-venta"><h2>No hay venta para mostrar</h2></div>';
+            return;
+        }
+
+        const empresa = "Dadisimo S.A.";
+        const ticketDiv = document.getElementById("ticket");
+
+        let html = `
+            <h1>Ticket de Compra</h1>
+            <div class="empresa">${empresa}</div>
+            <div class="info-cliente">
+                <p><strong>Cliente:</strong> ${venta.nombreCliente}</p>
+                <p><strong>Fecha:</strong> ${new Date(venta.fecha).toLocaleString('es-AR')}</p>
+                <p><strong>Ticket N°:</strong> ${venta.id}</p>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Producto</th>
+                        <th>Cantidad</th>
+                        <th>Precio Unit.</th>
+                        <th>Subtotal</th>
+                    </tr>
+                </thead>
+                <tbody>
+        `;
+
+        venta.VentaDetalles.forEach(detalle => {
+            html += `
+                <tr>
+                    <td>${detalle.Producto.id}</td>
+                    <td>${detalle.Producto.nombre}</td>
+                    <td>${detalle.cantidad}</td>
+                    <td>$${parseFloat(detalle.Producto.precio).toFixed(2)}</td>
+                    <td>$${parseFloat(detalle.subtotal).toFixed(2)}</td>
+                </tr>
+            `;
+        });
+
+        html += `
+                </tbody>
+            </table>
+            <div class="total">Total: $${parseFloat(venta.precioTotal).toFixed(2)}</div>
+        `;
+
+        ticketDiv.innerHTML = html;
+
+        // Generar PDF
+        const { jsPDF } = window.jspdf;
+        const btnPdf = document.getElementById("btnDescargar");
+
+        btnPdf.addEventListener("click", () => {
+            const doc = new jsPDF();
+            
+            let y = 20;
+            
+            // Encabezado
+            doc.setFontSize(18);
+            doc.setFont(undefined, 'bold');
+            doc.text(empresa, 105, y, { align: 'center' });
+            
+            y += 10;
+            doc.setFontSize(14);
+            doc.text('Ticket de Compra', 105, y, { align: 'center' });
+            
+            y += 10;
+            doc.line(20, y, 190, y);
+            
+            // Información
+            y += 10;
+            doc.setFontSize(11);
+            doc.setFont(undefined, 'normal');
+            doc.text(`Cliente: ${venta.nombreCliente}`, 20, y);
+            y += 7;
+            doc.text(`Fecha: ${new Date(venta.fecha).toLocaleString('es-AR')}`, 20, y);
+            y += 7;
+            doc.text(`Ticket N°: ${venta.id}`, 20, y);
+            
+            // Tabla
+            y += 12;
+            doc.setFont(undefined, 'bold');
+            doc.text('ID', 20, y);
+            doc.text('Producto', 35, y);
+            doc.text('Cant.', 110, y);
+            doc.text('P. Unit.', 135, y);
+            doc.text('Subtotal', 165, y);
+            
+            y += 2;
+            doc.line(20, y, 190, y);
+            y += 7;
+            
+            doc.setFont(undefined, 'normal');
+            venta.VentaDetalles.forEach(detalle => {
+                doc.text(String(detalle.Producto.id), 20, y);
+                doc.text(detalle.Producto.nombre.substring(0, 30), 35, y);
+                doc.text(String(detalle.cantidad), 110, y);
+                doc.text(`$${parseFloat(detalle.Producto.precio).toFixed(2)}`, 135, y);
+                doc.text(`$${parseFloat(detalle.subtotal).toFixed(2)}`, 165, y);
+                y += 7;
+                
+                if (y > 270) {
+                    doc.addPage();
+                    y = 20;
+                }
+            });
+            
+            // Total
+            y += 5;
+            doc.line(20, y, 190, y);
+            y += 10;
+            doc.setFontSize(14);
+            doc.setFont(undefined, 'bold');
+            doc.text(`TOTAL: $${parseFloat(venta.precioTotal).toFixed(2)}`, 190, y, { align: 'right' });
+            
+            doc.save(`ticket_${venta.id}.pdf`);
+        });
+    });
+    </script>
+
+    <footer class="footer">
+        <p>Desarrollado por: Nicanor Gatti</p>
+    </footer>
+</body>
+</html>
