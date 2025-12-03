@@ -18,7 +18,7 @@ Prerequisitos:
     
     PORT = 3000
 
-  desde el commandprop ejecutar:
+  desde el commandpromt (NO POWERSHELL) ejecutar:
   
       cd backend
       
